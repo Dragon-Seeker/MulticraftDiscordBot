@@ -1,0 +1,10 @@
+# Files and directories created by pub.
+.dart_tool/
+.packages
+
+# Conventional directory for build output.
+build/
+/assets/info/bot_info.json
+/assets/info/user_info.json
+/assets/servers/server_1.json
+/assets/servers/The Bonfire_favicon_data.txt
