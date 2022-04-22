@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_minecraft/dart_minecraft.dart';
+import 'package:dart_minecraft/src/packet/packets/response_packet.dart';
 import 'package:nyxx/nyxx.dart';
 import "package:nyxx_interactions/nyxx_interactions.dart";
 import 'package:string_capitalize/string_capitalize.dart';
@@ -32,7 +33,6 @@ class FuBot{
         ..registerPlugin(Logging()) // Default logging plugin
         ..registerPlugin(CliIntegration()) // Cli integration for nyxx allows stopping application via SIGTERM and SIGKILl
         ..registerPlugin(IgnoreExceptions()); // Plugin that handles uncaught exceptions that may occur;
-
 
       guildSnowflake = Snowflake(botInfo["server_guild_id"]);
       roleSnowflake = Snowflake(botInfo["server_role_snowflake"]);
@@ -446,7 +446,13 @@ class FuBot{
       print("Ending Loop and running embed code.");
     }
 
-    final server = await ping(container.address, port: container.port);
+    ResponsePacket? server;
+
+    try{
+      server = await ping(container.address, port: container.port);
+    }on PingException catch (e){
+      print("Server was not found so defaulting player info and such to offline info! [${container.address}, ${container.port}]");
+    }
 
     Map<String, dynamic> statusMap = await CommandHelper.getStatus(container);
     Map<String, dynamic> resourceMap = await CommandHelper.getResources(
