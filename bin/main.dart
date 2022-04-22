@@ -6,7 +6,6 @@ import 'minecraft/ServerContainer.dart';
 import 'minecraft/network/net_io.dart' as net_io;
 
 void main(List<String> arguments) {
-  //
   net_io.open();
 
   initServerContainers();

@@ -65,7 +65,7 @@ class FuBot{
 
         bool hasButtonPerms = await _checkIfHasPermission(event.interaction.memberAuthor!);
 
-        event.sendFollowup(await outputServerEmbed(container, await event.interaction.channel.getOrDownload(), null, null, hasButtonPerms: hasButtonPerms));
+        event.sendFollowup(await outputServerEmbed(container, null, null, hasButtonPerms: hasButtonPerms));
 
       }else{
         String response = "It Seems that [$severName] isn't a Server I know, did you type it in correctly?";
@@ -98,7 +98,7 @@ class FuBot{
 
           IMessage message = await event.getOriginalResponse();
 
-          message.edit(await outputServerEmbed(container, await event.interaction.channel.getOrDownload(), message, (container) => isServerOnline(container)));
+          message.edit(await outputServerEmbed(container, message, (container) => isServerOnline(container)));
         }else{
           event.respond(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
         }
@@ -135,7 +135,7 @@ class FuBot{
 
           IMessage message = await event.getOriginalResponse();
 
-          message.edit(await outputServerEmbed(container, await event.interaction.channel.getOrDownload(), message, (container) async { return !(await isServerOnline(container)); }));
+          message.edit(await outputServerEmbed(container, message, (container) async { return !(await isServerOnline(container)); }));
         }else{
           event.respond(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
         }
@@ -167,7 +167,7 @@ class FuBot{
 
         IMessage message = await event.getOriginalResponse();
 
-        message.edit(await outputServerEmbed(container, await event.interaction.channel.getOrDownload(), message, (container) => isServerOnline(container)));
+        message.edit(await outputServerEmbed(container, message, (container) => isServerOnline(container)));
       }else{
         event.sendFollowup(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
       }
@@ -218,7 +218,7 @@ class FuBot{
         }
 
         if(permCheckFailed) {
-          print("saadshkjasfhdsahsadlkjsadhbdskjvg");
+          //print("saadshkjasfhdsahsadlkjsadhbdskjvg");
           channel.sendMessage(MessageBuilder()
             ..appendMention(event.interaction.userAuthor!)
             ..appendBold(": You don't have permission to use this Command"));
@@ -308,7 +308,7 @@ class FuBot{
           IMessage orginalEmbed = event.interaction.message!;
           IMessage initResponse = await channel.sendMessage(MessageBuilder()..appendBold("${container.name} Starting up..."));
 
-          orginalEmbed.edit(await outputServerEmbed(container, channel, null, (container) => isServerOnline(container), newEmbed: false));
+          orginalEmbed.edit(await outputServerEmbed(container, null, (container) => isServerOnline(container), newEmbed: false));
 
           await initResponse.delete();
         }else{
@@ -344,7 +344,7 @@ class FuBot{
         if(returnMap != MulticraftAPI.errorMap) {
           IMessage initResponse = await channel.sendMessage(MessageBuilder()..appendBold("${container.name} is shutting down..."));
 
-          orginalEmbed.edit(await outputServerEmbed(container, channel, null, (container) async {
+          orginalEmbed.edit(await outputServerEmbed(container, null, (container) async {
             return !(await isServerOnline(container));
           }, newEmbed: false));
 
@@ -376,7 +376,7 @@ class FuBot{
         IMessage orginalEmbed = event.interaction.message!;
         IMessage initResponse = await channel.sendMessage(MessageBuilder()..appendBold("${container.name} is restarting..."));
 
-        orginalEmbed.edit(await outputServerEmbed(container, channel, null, (container) => isServerOnline(container)));
+        orginalEmbed.edit(await outputServerEmbed(container, null, (container) => isServerOnline(container)));
 
         await initResponse.delete();
 
@@ -408,7 +408,7 @@ class FuBot{
         IMessage orginalEmbed = event.interaction.message!;
         IMessage initResponse = await channel.sendMessage(MessageBuilder()..appendBold("Refreshing: One moment!"));
 
-        orginalEmbed.edit(await outputServerEmbed(container, channel, null, (container) => Future.value(true), newEmbed: false));
+        orginalEmbed.edit(await outputServerEmbed(container, null, (container) => Future.value(true), newEmbed: false));
 
         initResponse.delete();
       }else{
@@ -421,7 +421,7 @@ class FuBot{
     }
   }
 
-  static Future<MessageBuilder> outputServerEmbed(ServerContainer container, ITextChannel channel, IMessage? message, Future<bool> Function(ServerContainer)? predicate, {bool newEmbed = true, bool hasButtonPerms = true}) async{
+  static Future<MessageBuilder> outputServerEmbed(ServerContainer container, IMessage? message, Future<bool> Function(ServerContainer)? predicate, {bool newEmbed = true, bool hasButtonPerms = true}) async{
     int totalPausedTime = 0;
 
     if(predicate != null) {
@@ -475,9 +475,9 @@ class FuBot{
 
     if (statusMap != MulticraftAPI.errorMap ||
         resourceMap != MulticraftAPI.errorMap) {
-      print(statusMap);
-      print(resourceMap);
-      print(faviconData);
+      //print(statusMap);
+      //print(resourceMap);
+      //print(faviconData);
 
       ComponentMessageBuilder builder = ComponentMessageBuilder()
         ..replyBuilder = message != null ? ReplyBuilder.fromMessage(message) : null
@@ -531,7 +531,7 @@ class FuBot{
   static Future<bool> isServerOnline(ServerContainer serverContainer) async {
     Map<String, dynamic> statusMap = await CommandHelper.getStatus(serverContainer);
 
-    print(statusMap);
+    //print(statusMap);
 
     if(statusMap != MulticraftAPI.errorMap){
       if(statusMap["status"] == "online"){
