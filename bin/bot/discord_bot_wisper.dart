@@ -86,21 +86,23 @@ class FuBot{
     ServerContainer? container = ServerContainer.getServer(severName, id);
 
     if(container != null){
+      event.acknowledge();
+
       bool isServerOn = await isServerOnline(container);
 
       if(isServerOn){
-        event.respond(MessageBuilder()..appendBold("The Server is already online."));
+        event.sendFollowup(MessageBuilder()..appendBold("The Server is already online."));
       }else{
         Map<String, dynamic> returnMap = await CommandHelper.startServer(container);
 
         if(returnMap != MulticraftAPI.errorMap) {
-          await event.respond(MessageBuilder()..appendBold("${container.name} Starting up..."));
+          await event.sendFollowup(MessageBuilder()..appendBold("${container.name} Starting up..."));
 
           IMessage message = await event.getOriginalResponse();
 
           message.edit(await outputServerEmbed(container, message, (container) => isServerOnline(container)));
         }else{
-          event.respond(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
+          event.sendFollowup(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
         }
       }
 
@@ -123,21 +125,23 @@ class FuBot{
     ServerContainer? container = ServerContainer.getServer(severName, id);
 
     if(container != null){
+      event.acknowledge();
+
       bool isServerOn = await isServerOnline(container);
 
       if(!isServerOn){
-        event.respond(MessageBuilder()..appendBold("The Server is off!"));
+        event.sendFollowup(MessageBuilder()..appendBold("The Server is off!"));
       }else{
         Map<String, dynamic> returnMap = await CommandHelper.stopServer(container);
 
         if(returnMap != MulticraftAPI.errorMap) {
-          await event.respond(MessageBuilder()..appendBold("${container.name} is shutting down..."));
+          await event.sendFollowup(MessageBuilder()..appendBold("${container.name} is shutting down..."));
 
           IMessage message = await event.getOriginalResponse();
 
           message.edit(await outputServerEmbed(container, message, (container) async { return !(await isServerOnline(container)); }));
         }else{
-          event.respond(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
+          event.sendFollowup(MessageBuilder()..append("Hmm, I am Having a hard time getting any info about the Server, Either the API is down or something else has gone wrong"));
         }
       }
 
@@ -160,10 +164,12 @@ class FuBot{
     ServerContainer? container = ServerContainer.getServer(severName, id);
 
     if(container != null){
+      event.acknowledge();
+
       Map<String, dynamic> returnMap = await CommandHelper.restartServer(container);
 
       if(returnMap != MulticraftAPI.errorMap) {
-        await event.respond(MessageBuilder()..appendBold("${container.name} is restarting..."));
+        await event.sendFollowup(MessageBuilder()..appendBold("${container.name} is restarting..."));
 
         IMessage message = await event.getOriginalResponse();
 
