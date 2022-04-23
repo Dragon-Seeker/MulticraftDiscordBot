@@ -15,7 +15,9 @@ dev_dependencies:
 dependencies: 
   crypto: ^3.0.1
   http: ^0.13.4
+  async: ^2.9.0
   nyxx: ^3.4.1
   nyxx_interactions: ^4.1.0
   string_capitalize: ^0.0.7
   dart_minecraft: ^0.5.0
+
