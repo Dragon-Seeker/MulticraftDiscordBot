@@ -78,7 +78,7 @@ class FuBot{
       }
     });
 
-  static final SlashCommandBuilder startServer = SlashCommandBuilder("startserver", "Start a given server", [mainServerPar], defaultPermissions: false)
+  static final SlashCommandBuilder startServer = SlashCommandBuilder("startserver", "Start a given server", [mainServerPar])
     ..registerHandler((event) async {
     var severName = event.args.isNotEmpty ? event.getArg("servername").value : null;
     var id = severName != null ? int.tryParse(severName) : null;
@@ -117,7 +117,7 @@ class FuBot{
     }
   });
 
-  static final SlashCommandBuilder stopServer = SlashCommandBuilder("stopserver", "Stop a given server", [mainServerPar], defaultPermissions: false)
+  static final SlashCommandBuilder stopServer = SlashCommandBuilder("stopserver", "Stop a given server", [mainServerPar])
     ..registerHandler((event) async {
     var severName = event.args.isNotEmpty ? event.getArg("servername").value : null;
     var id = severName != null ? int.tryParse(severName) : null;
@@ -156,7 +156,7 @@ class FuBot{
     }
   });
 
-  static final SlashCommandBuilder restartServer = SlashCommandBuilder("restartserver", "Restart a given server", [mainServerPar], defaultPermissions: false)
+  static final SlashCommandBuilder restartServer = SlashCommandBuilder("restartserver", "Restart a given server", [mainServerPar])
     ..registerHandler((event) async {
     var severName = event.args.isNotEmpty ? event.getArg("servername").value : null;
     var id = severName != null ? int.tryParse(severName) : null;
@@ -191,9 +191,9 @@ class FuBot{
   void registerBotCommands(){
     IInteractions.create(WebsocketInteractionBackend(bot!))
       ..registerSlashCommand(serverStatus..guild = guildSnowflake)
-      ..registerSlashCommand(startServer..guild = guildSnowflake..addPermission(CommandPermissionBuilderAbstract.role(roleSnowflake)))
-      ..registerSlashCommand(stopServer..guild = guildSnowflake..addPermission(CommandPermissionBuilderAbstract.role(roleSnowflake)))
-      ..registerSlashCommand(restartServer..guild = guildSnowflake..addPermission(CommandPermissionBuilderAbstract.role(roleSnowflake)))
+      ..registerSlashCommand(startServer..guild = guildSnowflake..requiredPermissions = PermissionsConstants.administrator)
+      ..registerSlashCommand(stopServer..guild = guildSnowflake..requiredPermissions = PermissionsConstants.administrator)
+      ..registerSlashCommand(restartServer..guild = guildSnowflake..requiredPermissions = PermissionsConstants.administrator)
       ..events.onButtonEvent.listen((event) async {
         ITextChannel channel = await event.interaction.channel.getOrDownload();
 
